@@ -1,6 +1,7 @@
 # This is a game of hangman
 You the player guess a word and if its right that word is revealed else youre a step closer to hanging a man
 
+To install use- git clone [repository url] in your command prompt or terminal
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
