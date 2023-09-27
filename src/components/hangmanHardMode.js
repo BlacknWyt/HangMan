@@ -19,8 +19,9 @@ function HangManHardMode(){
     //synced states
     let [picProgress, picProgressUpdate] = useState(0)
     let [pic, picUpdate] = useState(pic1)
+    let [tried, triedUpdate] = useState('')
 
-    let [letters, lettersUpdate] = useState(['a', 's', 'p', 'i', 'r','e'])
+    let [letters, lettersUpdate] = useState(['e', 's', 'p', 'i', 'o','e'])
 
     function shufL(){
         //words available to play with in game
@@ -42,13 +43,13 @@ function HangManHardMode(){
         if(ran === 5){
             arr = arr[4]
         }
-
-        for(let b=0; b < letters.length; b++) {
-            document.getElementById(b).style.color ='white';
+        for(let i = 0; i < arr.length; i++){
+            if(document.getElementById(i))
+                document.getElementById(i).style.color = 'white';
         }
-
         lettersUpdate(arr);
         picProgressUpdate(0);
+        triedUpdate('')
     }
 
     let change = (e) => {
@@ -66,53 +67,21 @@ function HangManHardMode(){
         }
         let checkLetter = letter.toLowerCase();
 
+        triedUpdate(tried +" " + checkLetter);
         //this loop checks if the input letter is in the word
+        let word = false;
         for(let a=0; a < letters.length; a++){
             let letr = letters[a].toLowerCase();
             if(checkLetter === letr){
-                if(document.getElementById(a).style.color === 'black'){
-                    continue;
-                }
                 document.getElementById(a).style.color = 'black';
                 document.getElementById('inp').value = '';
-
-                checkWin();
-                return;
+                word = true;
             }
         }
-        //if the loop finishes then a level is add to the hanged man
-        picProgressUpdate(picProgress + 1);
-        document.getElementById('inp').value = '';
-    }
-
-    //this function checks if the user has won the game
-    function checkWin(){
-        let win = false;
-        //loops through letters and if they are all visible the user wins
-        for(let b=0; b < letters.length; b++) {
-            win = false;
-            if(document.getElementById(b).style.color === 'white'){
-                break;
-            }
-            win = true;
-        }
-        //if win is true then an alert congradulating the player will be output
-        if(win === true){
-            alert('Well done you won!!')
-            let c = prompt('Woulde you like to play again?')
-            if(c === null){
-                window.open("about:blank", "_self");
-                window.close();
-            }
-            else if(c.toLowerCase() === 'yes'){
-                alert('GoodLuck!')
-                shufL();
-            }
-            else{
-                alert('Shutting down')
-                window.open("about:blank", "_self");
-                window.close();
-            }
+        //if the loop finishes and word does not = true then a level is add to the hanged man
+        if(word === false){
+            picProgressUpdate(picProgress + 1);
+            document.getElementById('inp').value = '';
         }
     }
 
@@ -155,7 +124,9 @@ function HangManHardMode(){
 
     return(
         <div style={{display:'grid', gridTemplateColumns:'20% 60% 20%',textAlign:'center',margin:'0', marginBottom:'0'}}>
-            <div style={{backgroundColor:'red'}}></div>
+            <div style={{backgroundColor:'red'}}>
+                <p>Letters tried: <br/> {tried}</p>
+            </div>
             <div style={{marginTop:'30px', marginBottom:'30px'}}>
             <div>
               {
